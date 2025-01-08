@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Dec 11, 2024 at 03:08 AM
+-- Generation Time: Jan 07, 2025 at 02:20 AM
 -- Server version: 8.0.21
 -- PHP Version: 7.4.9
 
@@ -48,8 +48,8 @@ CREATE TABLE IF NOT EXISTS `modules` (
 INSERT INTO `modules` (`id`, `parent_id`, `name`, `url`, `slug`, `status`, `is_default`, `sortid`, `created_at`) VALUES
 (1, 0, 'Dashboard', '/', 'dashboard', 1, 1, 1, '2024-12-10 16:24:21'),
 (2, 0, 'User management', '#', 'user-management', 1, 0, 2, '2024-12-10 16:24:21'),
-(3, 2, 'Users', '/users', 'users', 1, 0, 1, '2024-12-10 16:24:21'),
-(4, 2, 'Roles', '/roles', 'roles', 1, 0, 2, '2024-12-10 16:24:21');
+(3, 2, 'Users', '/users/users_listing.php', 'users', 1, 0, 1, '2024-12-10 16:24:21'),
+(4, 2, 'Roles', '/roles/roles_listing.php', 'roles', 1, 0, 2, '2024-12-10 16:24:21');
 
 -- --------------------------------------------------------
 
@@ -88,17 +88,18 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8_bin NOT NULL,
   `is_default` tinyint NOT NULL DEFAULT '0',
+  `status` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `roles`
 --
 
-INSERT INTO `roles` (`id`, `name`, `is_default`) VALUES
-(1, 'Super admin', 1),
-(2, 'admin', 0);
+INSERT INTO `roles` (`id`, `name`, `is_default`, `status`) VALUES
+(1, 'Super admin', 1, 1),
+(2, 'admin', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -115,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `roles_modules_permissions` (
   PRIMARY KEY (`id`),
   KEY `role_has_module` (`module_id`),
   KEY `module_has_role` (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `roles_modules_permissions`
@@ -143,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `roles_modules_permissions_rights` (
   PRIMARY KEY (`id`),
   KEY `permissions` (`roles_modules_permissions_id`),
   KEY `rights` (`rights_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `roles_modules_permissions_rights`
@@ -187,14 +188,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   `status` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `name`, `phone`, `email`, `picture`, `gender_id`, `education_id`, `interests`, `aboutme`, `password`, `is_default`, `status`) VALUES
-(1, 'Super admin', '03327399488', 'delickate@hotmail.com', 'sani.jpg', 1, 4, '1,2,3', 'This is Sani Hyne', '25f9e794323b453885f5181f1b624d0b', 1, 1);
+(1, 'Super admin', '03327399488', 'delickate@hotmail.com', 'sani.jpg', 1, 4, '1,2,3', 'This is Sani Hyne', '25f9e794323b453885f5181f1b624d0b', 1, 1),
+(3, 'myname', '00923342344322', 'abc@xy.xom', '1736176908_dotnet core versions.JPG', NULL, NULL, NULL, NULL, '$2y$10$3SA3QGNewP86leicNKRFX.OpfPdc4T3pNqRsUNCTmBSKAdDV4QtHm', 0, 1),
+(4, 'test namq', '00923321211233', 'test@hotmail.com', '1736177199_dotnet core versions.JPG', NULL, NULL, NULL, NULL, '$2y$10$qbsDnlzrcEMbERaGDPIA7OhQhL/Ptp3uUhjjoJ4qkbo0pQZrhF5tW', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -210,14 +213,15 @@ CREATE TABLE IF NOT EXISTS `users_roles` (
   PRIMARY KEY (`id`),
   KEY `role_has_user` (`role_id`),
   KEY `user_has_role` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `users_roles`
 --
 
 INSERT INTO `users_roles` (`id`, `user_id`, `role_id`) VALUES
-(1, 1, 1);
+(1, 1, 1),
+(3, 4, 2);
 
 --
 -- Constraints for dumped tables
