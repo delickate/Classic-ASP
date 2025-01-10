@@ -123,7 +123,7 @@ user-management-system/
 │   ├── roles_delete.asp        # Delete role
 │   ├── roles_detail.asp        # View role details
 │   ├── roles_listing.asp       # List roles
-├── index.asp                   # Dashboard
+├── default.asp                   # Dashboard
 └── README.md                   # Documentation
 ```
 
