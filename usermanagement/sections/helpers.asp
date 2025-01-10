@@ -9,6 +9,7 @@
         Response.Write("Error Source: " & Err.Source & "<br>")
         Response.End() ' End processing
     End If
+    
 %>
 
 
@@ -46,10 +47,7 @@ If Request.Form("submit") <> "" Then
     ' Hash the input password using SHA-256
     hashedPassword = GetSHA256Hash(password)
 
-    ' Connect to MySQL Database
-    Set conn = Server.CreateObject("ADODB.Connection")
-    conn.Open "DRIVER={MySQL ODBC 8.0 ANSI Driver};SERVER=localhost;DATABASE=userdb;USER=root;PASSWORD=your_password;"
-
+    
     ' Query the database for the user with this email
     query = "SELECT * FROM users WHERE email = '" & email & "'"
     Set rs = conn.Execute(query)
@@ -75,4 +73,39 @@ If Request.Form("submit") <> "" Then
     conn.Close
     Set conn = Nothing
 End If
+
+
+Function GetUserNavigation(userId)
+    Dim conn, sql, rs, navHtml
+    Set conn = Server.CreateObject("ADODB.Connection")
+    conn.Open "DRIVER={MySQL ODBC 8.0 ANSI Driver};SERVER=localhost;DATABASE=userdb;USER=root;PASSWORD=your_password;"
+
+
+    ' SQL to fetch allowed modules for the user
+    sql = "SELECT DISTINCT m.name, m.url " & _
+          "FROM modules m " & _
+          "INNER JOIN roles_modules_permissions rmp ON m.id = rmp.module_id " & _
+          "INNER JOIN users_roles ur ON rmp.role_id = ur.role_id " & _
+          "WHERE ur.user_id = " & userId & " AND m.status = 1 " & _
+          "ORDER BY m.sortid ASC"
+
+    Set rs = conn.Execute(sql)
+
+    ' Build the navigation HTML
+    navHtml = "<ul>"
+    Do While Not rs.EOF
+        navHtml = navHtml & "<li><a href='" & rs("url") & "'>" & rs("name") & "</a></li>"
+        rs.MoveNext
+    Loop
+    navHtml = navHtml & "</ul>"
+
+    ' Clean up
+    rs.Close
+    conn.Close
+    Set rs = Nothing
+    Set conn = Nothing
+
+    GetUserNavigation = navHtml
+End Function
+
 %>

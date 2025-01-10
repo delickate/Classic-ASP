@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Buraq Dubai Communication LLC | Telecom and Networking Solutions in UAE</title>
+	<title>User management | delickate | Sani Hyne | Class ASP</title>
   <meta name="description" content="user management, manage users, user roles, create users, delete users, update user information, user roles assignment">
 <meta name="keywords" content="user management, manage users, user roles, create users, delete users, update user information, user roles assignment">
 
